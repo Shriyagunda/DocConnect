@@ -7,7 +7,11 @@ export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
     const currencySymbol = "$";
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+    let backendUrl = import.meta.env.VITE_BACKEND_URL || "https://doc-connect-y1ps.vercel.app";
+    if (typeof backendUrl === "string" && backendUrl.includes("doc-connect-y1ps-") && backendUrl.includes(".vercel.app")) {
+        backendUrl = "https://doc-connect-y1ps.vercel.app";
+    }
+    backendUrl = typeof backendUrl === "string" ? backendUrl.replace(/\/+$/, "") : backendUrl;
 
     const [doctors, setDoctors] = useState([]);
     const [doctorsLoading, setDoctorsLoading] = useState(true);
