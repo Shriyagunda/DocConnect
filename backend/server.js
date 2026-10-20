@@ -12,7 +12,18 @@ verifySupabaseConnection().catch((error) => {
     console.error('Unable to reach Supabase. Confirm the SQL schema has been applied.');
     console.error(error.message);
 });
-app.use(cors());//frontend and backend communication
+
+const allowedOrigins = [
+    'https://doc-connect-a0i8c8049-shriyagunda.vercel.app',
+    'https://doc-connect-weld.vercel.app'
+];
+
+app.use(cors({
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 app.use('/api/admin',adminRouter);
