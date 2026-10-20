@@ -4,6 +4,7 @@ import validator from "validator";
 import userModel from "../models/userModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 import { isValidAppointmentSlot } from "../utils/appointmentMessages.js";
+import { getJwtSecret } from "../config/jwt.js";
 
 
 
@@ -42,7 +43,7 @@ const registerUser = async (req, res) => {
         }
 
         const user = await userModel.create(userData)
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+        const token = jwt.sign({ id: user._id }, getJwtSecret())
 
         res.json({ success: true, token })
 
@@ -71,7 +72,7 @@ const loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
 
         if (isMatch) {
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+            const token = jwt.sign({ id: user._id }, getJwtSecret())
             res.json({ success: true, token })
         }
         else {

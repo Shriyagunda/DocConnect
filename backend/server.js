@@ -2,9 +2,16 @@ import express from 'express';
 import cors from 'cors';    
 import 'dotenv/config';
 import { verifySupabaseConnection } from './config/supabase.js';
+import { getJwtSecret } from './config/jwt.js';
 import adminRouter from './routes/adminRoute.js';
 import doctorRouter from './routes/doctorRoute.js';
 import userRouter from './routes/userRoute.js';
+
+try {
+    getJwtSecret();
+} catch (error) {
+    console.warn(`[Startup Warning] ${error.message}`);
+}
 
 const app = express();
 const port= process.env.PORT || 5000;

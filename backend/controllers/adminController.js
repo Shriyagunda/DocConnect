@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import appointmentModel from "../models/appointmentModel.js";
 import userModel from '../models/userModel.js';
 import { DEFAULT_USER_IMAGE } from "../models/defaultUserImage.js";
+import { getJwtSecret } from "../config/jwt.js";
 
 const addDoctor = async (req, res) => {
     try{
@@ -70,7 +71,7 @@ const loginAdmin = async (req, res) => {
         const { email, password } = req.body
 
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-            const token = jwt.sign(email + password, process.env.JWT_SECRET)
+            const token = jwt.sign(email + password, getJwtSecret())
             res.json({ success: true, token })
         } else {
             res.json({ success: false, message: "Invalid credentials" })

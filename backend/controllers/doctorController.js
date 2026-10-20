@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import appointmentModel from "../models/appointmentModel.js";
 import { formatConfirmationMessage } from "../utils/appointmentMessages.js";
 import { sendConfirmationSms } from "../services/smsWebhook.js";
+import { getJwtSecret } from "../config/jwt.js";
 const changeAvailablity = async (req, res) => {
     console.log('changeAvailablity controller called');
     try {
@@ -37,7 +38,7 @@ const loginDoctor=async(req,res)=>{
         }
         const isMatch=await bcrypt.compare(password,doctor.password);
         if(isMatch){
-            const token=jwt.sign({id:doctor._id},process.env.JWT_SECRET);
+            const token=jwt.sign({id:doctor._id},getJwtSecret());
             res.json({success:true,token});
         }else{
             res.json({success:false,message:'Invalid Credentials'});
